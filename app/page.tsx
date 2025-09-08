@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-import { Auth, ThemeMinimal } from "@supabase/auth-ui-react";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "../lib/supabaseClient"; // use relative path to avoid alias issues
+
 
 function PdfUploader() {
   const [busy, setBusy] = useState(false);
@@ -44,13 +46,17 @@ function PdfUploader() {
 export default function Home() {
   const [userEmail, setUserEmail] = useState<string | null>(null);
 
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => setUserEmail(user?.email ?? null));
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
-      setUserEmail(session?.user?.email ?? null);
-    });
-    return () => sub.subscription.unsubscribe();
-  }, []);
+ useEffect(() => {
+  (async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUserEmail(user?.email ?? null);
+  })();
+  const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+    setUserEmail(session?.user?.email ?? null);
+  });
+  return () => subscription.unsubscribe();
+}, []);
+
 
   async function signOut() {
     await supabase.auth.signOut();
@@ -60,7 +66,7 @@ export default function Home() {
     return (
       <div>
         <p>Sign in to test your Supabase connection:</p>
-        <Auth supabaseClient={supabase} appearance={{ theme: ThemeMinimal }} providers={[]} />
+        <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />
       </div>
     );
   }
