@@ -5,6 +5,7 @@ import { supabase } from "../../../lib/supabaseClient";
 import ChordLine from "../../../components/ChordLine";
 import { chordProToSections } from "../../../lib/chordpro";
 import { twoLineToChordPro } from "../../../lib/twoline";
+import { normalizeWordPaste, twoLineToChordPro } from "../../../lib/twoline";
 
 type BodyJson = {
   sections: {
@@ -143,6 +144,12 @@ export default function NewSongPage() {
           <button onClick={onPreview}>Preview</button>
           <button onClick={onSave} disabled={busy}>
             Save to Supabase
+          </button>
+          <button
+            onClick={() => setRaw(prev => normalizeWordPaste(prev))}
+            type="button"
+          >
+            Cleanup (Word paste)
           </button>
         </div>
 
