@@ -102,17 +102,20 @@ export default function NewSongPage() {
       </div>
 
       {preview && (
-        <div style={{ borderTop: "1px solid #eee", paddingTop: 12 }}>
-          <h3>Preview</h3>
-          {preview.sections.map((s, si) => (
-            <div key={si} style={{ marginBottom: 12 }}>
-              {s.lines.map((ln, li) => (
-                <ChordLine key={li} lyric={ln.lyric} chords={ln.chords} />
-              ))}
-            </div>
+  <div style={{ borderTop: "1px solid #eee", paddingTop: 12 }}>
+    <h3>Preview</h3>
+    <div style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
+      {preview.sections.map((s, si) => (
+        <div key={si} style={{ marginBottom: 24 }}>
+          {s.lines.map((ln, li) => (
+            <ChordLine key={li} lyric={ln.lyric} chords={ln.chords} />
           ))}
         </div>
-      )}
+      ))}
     </div>
-  );
+  </div>
+)}
+;
+
+  
 } 
