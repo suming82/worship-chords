@@ -1,9 +1,9 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import { supabase } from "../lib/supabaseClient"; // use relative path to avoid alias issues
+import { supabase } from "../lib/supabaseClient";
+
 
 
 function PdfUploader() {
