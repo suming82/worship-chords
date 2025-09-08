@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 import ChordLine from "@/components/ChordLine";
 import { chordProToSections } from "@/lib/chordpro";
 import { twoLineToChordPro } from "@/lib/twoline";
