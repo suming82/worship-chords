@@ -74,6 +74,7 @@ export default function Home() {
   return (
     <div>
       <p>Signed in as <b>{userEmail}</b></p>
+      <a href="/songs/new" style={{ display: "inline-block", margin: "8px 0" }}>➕ Add a song</a>
       <button onClick={signOut} style={{ marginBottom: 16 }}>Sign out</button>
       <PdfUploader />
       <p style={{ marginTop: 12, color: "#666" }}>
