@@ -81,6 +81,20 @@ export default function NewSongPage() {
     }
   }
 
+  function handlePaste(e: React.ClipboardEvent<HTMLTextAreaElement>) {
+  e.preventDefault();
+  const text = e.clipboardData.getData("text");
+  // use your current tabSize so textarea & preview use the same spacing
+  const cleaned = normalizeWordPaste(text, tabSize);
+
+  const { selectionStart, selectionEnd, value } = e.currentTarget;
+  const next =
+    value.slice(0, selectionStart) + cleaned + value.slice(selectionEnd);
+
+  setRaw(next);
+}
+
+
   // ---------- RENDER ----------
   return (
     <div style={{ display: "grid", gap: 16 }}>
@@ -150,6 +164,7 @@ export default function NewSongPage() {
           }
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
+          onPaste={handlePaste}
           style={{
             width: "100%",
             fontFamily: "ui-monospace, monospace",
