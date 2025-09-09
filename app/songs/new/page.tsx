@@ -24,13 +24,15 @@ export default function NewSongPage() {
   const [userId, setUserId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [tabSize, setTabSize] = useState(8); // default 8 spaces per tab
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
   }, []);
 
   function makeJson(): BodyJson {
-    const chordPro = mode === "twoline" ? twoLineToChordPro(raw) : raw;
+    const chordPro =
+      mode === "twoline" ? twoLineToChordPro(raw, tabSize) : raw;
     const body = chordProToSections(chordPro);
     return body as BodyJson;
   }
@@ -127,6 +129,18 @@ export default function NewSongPage() {
           </select>
         </label>
 
+        <label>
+          Tab width{" "}
+          <input
+            type="number"
+            min={2}
+            max={12}
+            value={tabSize}
+            onChange={(e) => setTabSize(Number(e.target.value) || 8)}
+            style={{ width: 60, marginLeft: 8 }}
+          />
+        </label>
+
         <textarea
           rows={14}
           placeholder={
@@ -136,7 +150,11 @@ export default function NewSongPage() {
           }
           value={raw}
           onChange={(e) => setRaw(e.target.value)}
-          style={{ width: "100%", fontFamily: "ui-monospace, monospace" }}
+          style={{
+            width: "100%",
+            fontFamily: "ui-monospace, monospace",
+            whiteSpace: "pre",
+          }}
         />
 
         <div style={{ display: "flex", gap: 8 }}>
@@ -145,7 +163,7 @@ export default function NewSongPage() {
             Save to Supabase
           </button>
           <button
-            onClick={() => setRaw(prev => normalizeWordPaste(prev))}
+            onClick={() => setRaw((prev) => normalizeWordPaste(prev, tabSize))}
             type="button"
           >
             Cleanup (Word paste)
@@ -157,7 +175,7 @@ export default function NewSongPage() {
 
       {preview && (
         <div style={{ borderTop: "1px solid #eee", paddingTop: 12 }}>
-          <h3>Preview</h3>
+          <h3>Preview (tab width = {tabSize})</h3>
           <div style={{ overflowX: "auto", whiteSpace: "nowrap" }}>
             {preview.sections.map((s, si) => (
               <div key={si} style={{ marginBottom: 24 }}>
