@@ -29,6 +29,18 @@ export default function NewSongPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
   }, []);
+  useEffect(() => {
+    if (!raw.trim()) { setPreview(null); return; }
+    try {
+      const json = makeJson();   // uses current mode + tabSize
+      setPreview(json);
+      setMsg(null);
+    } catch (e: any) {
+      setMsg("Parse error: " + e.message);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [raw, mode, tabSize]);
+
 
   function makeJson(): BodyJson {
     const chordPro =
