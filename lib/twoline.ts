@@ -51,7 +51,7 @@ function mapColToIndexFactory(chordLine: string, lyric: string) {
   const scale = lastCol > 0 ? lastLyricIdx / lastCol : 1;
 
   return (col: number) => {
-    const idx = Math.round(col * scale);
+    const idx = Math.floor(col * scale);
     return Math.max(0, Math.min(lastLyricIdx, idx));
   };
 }
