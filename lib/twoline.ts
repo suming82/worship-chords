@@ -1,14 +1,15 @@
 // lib/twoline.ts
 
-// Normalize Word paste: CRLF -> LF, tabs -> 4 spaces, NBSP/ideographic space -> regular space
+// Normalize Word paste: CRLF -> LF, tabs -> 8 spaces, NBSP/full-width -> normal space
 export function normalizeWordPaste(input: string) {
   return input
     .replace(/\r\n/g, "\n")
     .replace(/\r/g, "\n")
-    .replace(/\t/g, "    ")         // tabs -> 4 spaces
-    .replace(/\u00A0/g, " ")        // NBSP -> space
-    .replace(/\u3000/g, " ");       // ideographic full-width space -> space
+    .replace(/\t/g, "        ")   // 8 spaces for each tab
+    .replace(/\u00A0/g, " ")      // non-breaking space
+    .replace(/\u3000/g, " ");     // full-width ideographic space
 }
+
 
 // Measure "visual columns" in a string after normalization (each char = 1 col)
 function tokenStartColumns(line: string) {
